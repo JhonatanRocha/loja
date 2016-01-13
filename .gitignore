@@ -1,0 +1,8 @@
+# Ignoring all files that ends with the following extensions #
+*.war
+*.ear
+*.class
+*.project
+*.DS_Store
+*.classpath
+/bin/
