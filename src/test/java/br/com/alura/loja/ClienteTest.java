@@ -1,6 +1,7 @@
 package br.com.alura.loja;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -23,9 +24,10 @@ import com.thoughtworks.xstream.XStream;
 public class ClienteTest {
 
 	private HttpServer server;
+	private Client client;
 	
 	private WebTarget getWebTarget() {
-		Client client = ClientBuilder.newClient();
+		this.client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8080");
 		return target;
 	}
@@ -81,7 +83,11 @@ public class ClienteTest {
         Entity<String> entity = Entity.entity(xml, MediaType.APPLICATION_XML);
         Response response = getWebTarget().path("/carrinhos").request().post(entity);
         
-        assertEquals("<status>sucesso</status>", response.readEntity(String.class));
+        assertEquals(201, response.getStatus());
+        
+        String location = response.getHeaderString("Location");
+        String conteudo = client.target(location).request().get(String.class);
+        assertTrue(conteudo.contains("Tablet"));
 	}
 	
 	@Test
@@ -92,6 +98,11 @@ public class ClienteTest {
 		
 		Entity<String> entity = Entity.entity(xml, MediaType.APPLICATION_XML);
 		Response response = getWebTarget().path("/projetos").request().post(entity);
-		assertEquals("<status>sucesso</status>", response.readEntity(String.class));
+        
+		assertEquals(201, response.getStatus());
+        
+        String location = response.getHeaderString("Location");
+        String conteudo = client.target(location).request().get(String.class);
+        assertTrue(conteudo.contains("Projeto Test"));
 	}
 }
