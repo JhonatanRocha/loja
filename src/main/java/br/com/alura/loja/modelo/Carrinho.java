@@ -76,6 +76,15 @@ public class Carrinho {
 	public List<Produto> getProdutos() {
 		return produtos;
 	}
+	
+	public Produto getUnicoProduto(long productId){
+		for (Produto produto : produtos) {
+			if(productId == produto.getId()){
+				return produto;
+			}
+		}
+		return null;
+	}
 
 	public String toXML() {
 		return new XStream().toXML(this);

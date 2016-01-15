@@ -1,5 +1,8 @@
 package br.com.alura.loja.modelo;
 
+import com.google.gson.Gson;
+import com.thoughtworks.xstream.XStream;
+
 
 public class Produto {
 
@@ -7,6 +10,10 @@ public class Produto {
 	private long id;
 	private String nome;
 	private int quantidade;
+	
+	public Produto() {
+		
+	}
 	
 	public Produto(long id, String nome, double preco, int quantidade) {
 		this.id = id;
@@ -37,5 +44,13 @@ public class Produto {
 
 	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
+	}
+	
+	public String toXML() {
+		return new XStream().toXML(this);
+	}
+	
+	public String toJSON() {
+		return new Gson().toJson(this);
 	}
 }
